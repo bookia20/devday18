@@ -3,7 +3,8 @@
 In this Lab we are trying to find out how much New Yorkers tip their taxi drivers using the [NYC taxi Data Set](http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml). The data set includes CSV files of the past 8 years and for three different cab types. For this lab we focus on Yellow and Green cabs data for the last quarter of 2017.
 
 
-* [Initialization](#create-an-iam-role)
+* [Create an IAM Role](#create-an-iam-role)
+* [Create an Amazon S3 bucket](#create-an-amazon-s3-bucket)
 * [Discover the Data](#discover-the-data)
 * [Optimize the Queries and convert into Parquet](#optimize-the-queries-and-convert-into-parquet)
 * [Query the Partitioned Data using Amazon Athena](#query-the-partitioned-data-using-amazon-athena)
@@ -24,7 +25,7 @@ Create an IAM role that has permission to your Amazon S3 sources, targets, tempo
 
 4. On the same page, now search policies for Glue and check the box for **AWSGlueServiceRole** and **AWSGlueConsoleFullAccess**.
 
-> Do not click on the policy, you just have to check the corresponding checkbox.
+![iamroleperm.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/iamroleperm.png)
 
 5. Click on **Next: Review**.
 6. Enter Role name as
@@ -38,17 +39,11 @@ nycitytaxi-devday18
 ## Create an Amazon S3 bucket
 
 1. Open the [AWS Management console for Amazon S3](https://s3.console.aws.amazon.com/s3/home?region=us-west-2)
-2. On the S3 Dashboard, Click on **Create Bucket**.
-
-![createbucket.png](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab1/createbucket.png)
-
-1. In the **Create Bucket** pop-up page, input a unique **Bucket name**. So it’s advised to choose a large bucket name, with many random characters and numbers (no spaces). It will be easier to name your bucket
+2. On the S3 Dashboard, Click on **Create Bucket**. In the **Create Bucket** pop-up page, input a unique **Bucket name**. So it’s advised to choose a large bucket name, with many random characters and numbers (no spaces) to avoid name conflicts. As an example:
 
    ```
    devday18-<YOURNAME>-syd
    ```
-
-   and it would be easier to choose/select this bucket for the remainder of this Lab3.
 
    i.Select the region as **Sydney**.
    ii. Click **Next** to navigate to next tab.
@@ -56,11 +51,13 @@ nycitytaxi-devday18
    iv. In the **Set permissions** tab, leave all options as default.
    v. In the **Review** tab, click on **Create Bucket**
 
-![createbucketpopup.png](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab1/createbucketpopup.png)
+![bucket.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/bucket.png)
+
+2. Now, in this newly created bucket, create a folder and name it **combined**. We will use these bucket/folder to store parquet files result of ETL process.
 
 ## Discover the Data
 
-During this workshop, we will focus on the data from Q4 2017 of the New York City Taxi dataset, however you could easily do this for the entire eight years of data. As you crawl this unknown dataset, you discover that the data is in different formats, depending on the type of taxi. You then convert the data to a canonical form, start to analyze it, and build a set of visualizations. All without launching a single server.
+As mentioned during this workshop, we will focus on the data from Q4 2017 of the New York City Taxi dataset, however you could easily do this for the entire eight years of data. As you crawl this unknown dataset, you discover that the data is in different formats, depending on the type of taxi. You then convert the data to a canonical form, start to analyze it, and build a set of visualizations. All without launching a single server.
 
 > For this lab, you choose the **Asia Pacific (Sydney)** region.
 
@@ -70,7 +67,7 @@ During this workshop, we will focus on the data from Q4 2017 of the New York Cit
 
    i. Click on **Databases** under Data Catalog column on the left.
 
-   ![glue1](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_1.PNG)
+   ![glue-database.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/glue-database.png)
 
    ii. Click on the **Add Database** button.
 
@@ -78,7 +75,7 @@ During this workshop, we will focus on the data from Q4 2017 of the New York Cit
 
 3. Click on **Crawlers** under Data Catalog column on the left.
 
-   ![glue2](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_2.PNG)
+   ![glue-crawler.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/glue-crawler.png)
 
    i. Click on **Add Crawler** button.
 
@@ -116,7 +113,7 @@ During this workshop, we will focus on the data from Q4 2017 of the New York Cit
 
    ​	c. Review configuration and click on **Finish** and on the next page, click on **Run it now** in the green box on the top.
 
-   ![glue14](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_14.PNG)
+   ![runitnow.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/runitnow.png)
 
    ​	d. The crawler runs and indicates that it found two tables.
 
@@ -124,7 +121,7 @@ During this workshop, we will focus on the data from Q4 2017 of the New York Cit
 
 5. If you look under **Tables**, you can see the two new tables that were created under the database nycitytaxi-devday18.
 
-   ![glue4](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_4.PNG)
+   ![glue-csv-tables.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/glue-csv-tables.png)
 
 6. The crawler used the built-in classifiers and identified the tables as CSV, inferred the columns/data types, and collected a set of properties for each table. If you look in each of those table definitions, you see the number of rows for each dataset found and that the columns don’t match between tables. As an example, clicking on the devday18_yellow table, you can see the yellow dataset for Q417 with 28.5 million records, the location on S3, and the various columns found.
 
