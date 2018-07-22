@@ -256,14 +256,13 @@ Create an ETL job to transform this data into a query-optimized form. You conver
 
   iv. Now click on **Save** and **Run Job**.
 
-9. The code should look like:
-![Glue Job Code](https://github.com/safipour/devday18/blob/master/glue-etl.py)
+9. The code should look like [Glue Job Code](https://github.com/safipour/devday18/blob/master/glue-etl.py) with S3 bucket that you created earlier as the target.
 
 ![glue10](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_10.PNG)
 
 10. In the parameters pop-up, for Job bookmark, ensure its **Enable** and click on **Run Job**.
 
-11. This job will run for roughly around 30 minutes.
+11. This job will run for roughly around 2 minutes.
 
    ![glue11](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_11.PNG)
 
@@ -279,7 +278,7 @@ In regions where AWS Glue is supported, Athena uses the AWS Glue Data Catalog as
 
 1. Open the [AWS Management console for Amazon Athena](https://us-west-2.console.aws.amazon.com/athena/home?force&region=us-west-2).
 
-   > Ensure you are in the **US West (Oregon)** region.
+   > Ensure you are in the **Asia Pacific (Sydney)** region.
 
 2. Under Database, you should see the database **nycitytaxi-devday18** which was created during the previous section.
 
