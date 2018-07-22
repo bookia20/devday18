@@ -65,7 +65,7 @@ During this workshop, we will focus on the data from Q4 2017 of the New York Cit
 
 1. Open the [AWS Management console for Amazon Glue](https://ap-southeast-2.console.aws.amazon.com/glue/home?region=ap-southeast-2#).
 
-2. To analyze all the taxi rides for Q4 2018, you start with a set of data in S3. First, create a database for this workshop within AWS Glue. A database is a set of associated table definitions, organized into a logical group. In Glue Catalog, database names are all lowercase, no matter what you type.
+2. To analyze all the taxi rides for Q4 2017, you start with a set of data in that is already uploaded to S3. First, create a database for this workshop within AWS Glue. A database is a set of associated table definitions, organized into a logical group. In Glue Catalog, database names are all lowercase, no matter what you type.
 
    i. Click on **Databases** under Data Catalog column on the left.
 
@@ -81,14 +81,14 @@ During this workshop, we will focus on the data from Q4 2017 of the New York Cit
 
    i. Click on **Add Crawler** button.
 
-   ii. Under Add information about your crawler, for Crawler name type **nycitytaxi-crawler-devday18**. You can skip the Description and Classifiers field and click on **Next**.
+   ii. Under Add information about your crawler, for Crawler name type **nycitytaxi-csv-crawler**. You can skip the Description and Classifiers field and click on **Next**.
 
    iii. Under Data Store, choose S3.
 
    iv. For Include path, enter the following S3 path and click on **Next**.
 
    ```
-   s3://devday18/nytaxi/yellow
+   s3://devday18/nytaxi/yellow/
    ```
 
    v. For Add Another data store, choose **Yes** and click on **Next**.
@@ -96,7 +96,7 @@ During this workshop, we will focus on the data from Q4 2017 of the New York Cit
    vi. Enter path for the Green Taxi data:
 
    ```
-   s3://devday18/nytaxi/green
+   s3://devday18/nytaxi/green/
    ```
 
    vii. Select No for another data store and Next, for Choose an IAM Role, select **Create an IAM role** and enter the role name as following and click on **Next**.
@@ -111,7 +111,7 @@ During this workshop, we will focus on the data from Q4 2017 of the New York Cit
 
    ​	a. For **Database**, select the database created earlier, **nycitytaxi-devday18**.
 
-   ​	b. For **Prefix added to tables (optional)**, type **q417_** and click on **Next**.
+   ​	b. For **Prefix added to tables (optional)**, type **csv_** and click on **Next**.
 
    ​	c. Review configuration and click on **Finish** and on the next page, click on **Run it now** in the green box on the top.
 
@@ -280,7 +280,7 @@ In regions where AWS Glue is supported, Athena uses the AWS Glue Data Catalog as
 
 4. You will now be re-directed to the AWS Glue console to set up a crawler. The crawler connects to your data store and automatically determines its structure to create the metadata for your table. Click on **Continue**.
 
-5. Enter Crawler name as **nycitytaxi-crawlerparquet-devday18** and Click **Next**.
+5. Enter Crawler name as **nycitytaxi-parquet-crawler** and Click **Next**.
 
 6. Select Data store as **S3**.
 
@@ -292,26 +292,26 @@ In regions where AWS Glue is supported, Athena uses the AWS Glue Data Catalog as
 
 9. In Add another data store, choose **No** and click on **Next**.
 
-10. For Choose an IAM role, select Choose an existing IAM role, and in the drop-down pick the role made in the previous section and click on **Next**.
+10. For Choose an IAM role, select Choose Create an IAM role, type **combined-crawler** as the name suffix and click on **Next**.
 
 11. In Create a schedule for this crawler, pick frequency as **Run on demand** and click on **Next**.
 
-12. For Configure the crawler's output, Click **Add Database** and enter **nycitytaxi-devday18-parquet** as the database name and click **create**. For Prefix added to tables, you can enter a prefix **parq_** and click **Next**.
+12. For Configure the crawler's output, Select **nycitytaxi-devday18** as the database from the drop down. For Prefix added to tables, you can enter a prefix **parquet_** and click **Next**.
 
 13. Review the Crawler Info and click **Finish**. Click on **Run it Now?**.
 
-14. Click on **Tables** on the left, and for database nycitytaxi-devday18-parquet you should see the table parq_target. Click on the table name and you will see the MetaData for this converted table.
+14. Click on **Tables** on the left, and for database **nycitytaxi-devday18** you should see the table **parquet_combined**. Click on the table name and you will see the MetaData for this converted table.
 
-15. Open the [AWS Management console for Amazon Athena](https://us-west-2.console.aws.amazon.com/athena/home?force&region=us-west-2).
+15. Open the [AWS Management console for Amazon Athena](https://ap-southeast-2.console.aws.amazon.com/athena/home?region=ap-southeast-2#query).
 
-    > Ensure you are in the **US West (Oregon)** region.
+    > Ensure you are in the **Asian Pacific (Sydney)** region.
 
-16. Under Database, you should see the database **nycitytaxi-devday18-parquet** which was just created. Select this database and you should see under Tables **parq_target**.
+16. Under Database, you should see the database **nycitytaxi-devday18** which was just created. Select this database and you should see under Tables **combined_parquet**.
 
 17. In the query editor on the right, type
 
     ```
-    select count(*) from parq_target;
+    select count(*) from parquet_combined;
     ```
 
     and take note the Run Time and Data scanned numbers here.
