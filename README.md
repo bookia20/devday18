@@ -3,12 +3,10 @@
 In this Lab we are trying to find out how much New Yorkers tip their taxi drivers using the [NYC taxi Data Set](http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml). The data set includes CSV files of the past 8 years and for three different cab types. For this lab we focus on Yellow and Green cabs data for the last quarter of 2017.
 
 
-* [Create an IAM Role](#create-an-iam-role)
-* [Create an Amazon S3 bucket](#create-an-amazon-s3-bucket)
+* [Initialization](#create-an-iam-role)
 * [Discover the Data](#discover-the-data)
 * [Optimize the Queries and convert into Parquet](#optimize-the-queries-and-convert-into-parquet)
 * [Query the Partitioned Data using Amazon Athena](#query-the-partitioned-data-using-amazon-athena)
-* [Deleting the Glue database, crawlers and ETL Jobs created for this Lab](#deleting-the-glue-database-crawlers-and-etl-jobs-created-for-this-lab)
 * [Summary](#summary)
 
 ## Architectural Diagram
@@ -290,7 +288,7 @@ The Athena query engine uses the AWS Glue Data Catalog to fetch table metadata t
 
 9. In Add another data store, choose **No** and click on **Next**.
 
-10. For Choose an IAM role, select Choose Create an IAM role, type **combined-crawler** as the name suffix and click on **Next**.
+10. For Choose an IAM role, select Choose **Create an IAM role**, type **combined-crawler** as the name suffix and click on **Next**.
 
 11. In Create a schedule for this crawler, pick frequency as **Run on demand** and click on **Next**.
 
@@ -312,7 +310,7 @@ The Athena query engine uses the AWS Glue Data Catalog to fetch table metadata t
     select count(*) from parquet_combined;
     ```
 
-    and take note the Run Time and Data scanned numbers here. You can see that a lot less data is scanned compare to when you ran the same query in CSV.
+    and take note of the Run Time and Data scanned numbers here. You can see that a lot less data is scanned compare to when you ran the same query against CSV table.
 
 18. Finally: Run the following query to find out the answer to our question:
 
