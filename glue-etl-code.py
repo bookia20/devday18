@@ -58,17 +58,17 @@ datasink4 = glueContext.write_dynamic_frame.from_options(frame = yellowDynamicFr
 
 ####### Second DataSource
 
-datasource2 = glueContext.create_dynamic_frame.from_catalog(database = "nycitytaxianalysis", table_name = "green", transformation_ctx = "datasource2")
+datasource22 = glueContext.create_dynamic_frame.from_catalog(database = "nycitytaxianalysis", table_name = "green", transformation_ctx = "datasource22")
 
-applymapping2 = ApplyMapping.apply(frame = datasource2, mappings = [("vendorid", "long", "vendorid", "long"), ("lpep_pickup_datetime", "string", "pickup_date", "timestamp"), ("lpep_dropoff_datetime", "string", "dropoff_date", "timestamp"), ("store_and_fwd_flag", "string", "store_and_fwd_flag", "string"), ("ratecodeid", "long", "ratecodeid", "long"), ("pulocationid", "long", "pulocationid", "long"), ("dolocationid", "long", "dolocationid", "long"), ("passenger_count", "long", "passenger_count", "long"), ("trip_distance", "double", "trip_distance", "double"), ("fare_amount", "double", "fare_amount", "double"), ("extra", "double", "extra", "double"), ("mta_tax", "double", "mta_tax", "double"), ("tip_amount", "double", "tip_amount", "double"), ("tolls_amount", "double", "tolls_amount", "double"), ("improvement_surcharge", "double", "improvement_surcharge", "double"), ("total_amount", "double", "total_amount", "double"), ("payment_type", "long", "payment_type", "long")], transformation_ctx = "applymapping2")
+applymapping22 = ApplyMapping.apply(frame = datasource22, mappings = [("vendorid", "long", "vendorid", "long"), ("lpep_pickup_datetime", "string", "pickup_date", "timestamp"), ("lpep_dropoff_datetime", "string", "dropoff_date", "timestamp"), ("store_and_fwd_flag", "string", "store_and_fwd_flag", "string"), ("ratecodeid", "long", "ratecodeid", "long"), ("pulocationid", "long", "pulocationid", "long"), ("dolocationid", "long", "dolocationid", "long"), ("passenger_count", "long", "passenger_count", "long"), ("trip_distance", "double", "trip_distance", "double"), ("fare_amount", "double", "fare_amount", "double"), ("extra", "double", "extra", "double"), ("mta_tax", "double", "mta_tax", "double"), ("tip_amount", "double", "tip_amount", "double"), ("tolls_amount", "double", "tolls_amount", "double"), ("improvement_surcharge", "double", "improvement_surcharge", "double"), ("total_amount", "double", "total_amount", "double"), ("payment_type", "long", "payment_type", "long")], transformation_ctx = "applymapping2")
 
-resolvechoice22 = ResolveChoice.apply(frame = applymapping2, choice = "make_struct", transformation_ctx = "resolvechoice22")
+resolvechoice22 = ResolveChoice.apply(frame = applymapping22, choice = "make_struct", transformation_ctx = "resolvechoice22")
 
-dropnullfields2 = DropNullFields.apply(frame = resolvechoice22, transformation_ctx = "dropnullfields2")
+dropnullfields22 = DropNullFields.apply(frame = resolvechoice22, transformation_ctx = "dropnullfields22")
 
 ##----------------------------------
 #convert to a Spark DataFrame...
-greenDF = dropnullfields2.toDF()
+greenDF = dropnullfields22.toDF()
 
 #add a new column for "type"
 greenDF = greenDF.withColumn("type", lit('green'))
