@@ -228,7 +228,7 @@ Create an ETL job to transform this data into a query-optimized form. You conver
   ```
   ####### Second DataSource
 
-  datasource22 = glueContext.create_dynamic_frame.from_catalog(database = "nycitytaxianalysis", table_name = "green", transformation_ctx = "datasource22")
+  datasource22 = glueContext.create_dynamic_frame.from_catalog(database = "nycitytaxi-devday18", table_name = "green", transformation_ctx = "datasource22")
 
   applymapping22 = ApplyMapping.apply(frame = datasource22, mappings = [("vendorid", "long", "vendorid", "long"), ("lpep_pickup_datetime", "string", "pickup_date", "timestamp"), ("lpep_dropoff_datetime", "string", "dropoff_date", "timestamp"), ("store_and_fwd_flag", "string", "store_and_fwd_flag", "string"), ("ratecodeid", "long", "ratecodeid", "long"), ("pulocationid", "long", "pulocationid", "long"), ("dolocationid", "long", "dolocationid", "long"), ("passenger_count", "long", "passenger_count", "long"), ("trip_distance", "double", "trip_distance", "double"), ("fare_amount", "double", "fare_amount", "double"), ("extra", "double", "extra", "double"), ("mta_tax", "double", "mta_tax", "double"), ("tip_amount", "double", "tip_amount", "double"), ("tolls_amount", "double", "tolls_amount", "double"), ("improvement_surcharge", "double", "improvement_surcharge", "double"), ("total_amount", "double", "total_amount", "double"), ("payment_type", "long", "payment_type", "long")], transformation_ctx = "applymapping2")
 
@@ -266,13 +266,11 @@ Create an ETL job to transform this data into a query-optimized form. You conver
 
 12. You can view logs on the bottom page of the same page.
 
-  ![glue12](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_12.PNG)
+13. The target folder (S3 Bucket) specified above will now have the converted parquet data.
 
-13. The target folder (S3 Bucket) specified above (step 6 iii) will now have the converted parquet data.
+## Query the Combined Data using Amazon Athena
 
-## Query the Partitioned Data using Amazon Athena
-
-In regions where AWS Glue is supported, Athena uses the AWS Glue Data Catalog as a central location to store and retrieve table metadata throughout an AWS account. The Athena execution engine requires table metadata that instructs it where to read data, how to read it, and other information necessary to process the data. The AWS Glue Data Catalog provides a unified metadata repository across a variety of data sources and data formats, integrating not only with Athena, but with Amazon S3, Amazon RDS, Amazon Redshift, Amazon Redshift Spectrum, Amazon EMR, and any application compatible with the Apache Hive metastore.
+In regions where AWS Glue is supported, Athena uses the AWS Glue Data Catalog as a central location to store and retrieve table metadata throughout an AWS account. The Athena query engine uses the AWS Glue Data Catalog to fetch table metadata that instructs it where to read data, how to read it, and other information necessary to process the data. The AWS Glue Data Catalog provides a unified metadata repository across a variety of data sources and data formats, integrating not only with Athena, but with Amazon S3, Amazon RDS, Amazon Redshift, Amazon Redshift Spectrum, Amazon EMR, and any application compatible with the Apache Hive metastore.
 
 1. Open the [AWS Management console for Amazon Athena](https://us-west-2.console.aws.amazon.com/athena/home?force&region=us-west-2).
 
