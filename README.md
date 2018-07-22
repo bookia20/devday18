@@ -32,7 +32,7 @@ Create an IAM role that has permission to your Amazon S3 sources, targets, tempo
 nycitytaxi-devday18
 ```
 
-​	and click Finish.
+​	and click Create Role.
 
 ## Create an Amazon S3 bucket
 
@@ -52,16 +52,14 @@ nycitytaxi-devday18
    i.Select the region as **Sydney**.
    ii. Click **Next** to navigate to next tab.
    iii. In the **Set properties** tab, leave all options as default.
-   iv. In the **Set permissions** tag, leave all options as default.
+   iv. In the **Set permissions** tab, leave all options as default.
    v. In the **Review** tab, click on **Create Bucket**
 
 ![createbucketpopup.png](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab1/createbucketpopup.png)
 
-2. Now, in this newly created bucket, create two sub-buckets **tmp** and **target** using the same instructions as the above step. We will use these buckets as part of Lab3 later on.
-
 ## Discover the Data
 
-During this workshop, we will focus on Q417 of the New York City Taxi Records dataset, however you could easily do this for the entire eight years of data. As you crawl this unknown dataset, you discover that the data is in different formats, depending on the type of taxi. You then convert the data to a canonical form, start to analyze it, and build a set of visualizations. All without launching a single server.
+During this workshop, we will focus on the data from Q4 2017 of the New York City Taxi dataset, however you could easily do this for the entire eight years of data. As you crawl this unknown dataset, you discover that the data is in different formats, depending on the type of taxi. You then convert the data to a canonical form, start to analyze it, and build a set of visualizations. All without launching a single server.
 
 > For this lab, you choose the **Asia Pacific (Sydney)** region.
 
@@ -286,7 +284,7 @@ In regions where AWS Glue is supported, Athena uses the AWS Glue Data Catalog as
 
 6. Select Data store as **S3**.
 
-7. Choose Crawl data in **Specified path in my account**.
+7. Choose Crawl data in **Specified path in your account**.
 
 8. For Include path, click on the folder Icon and choose the **target** folder previously made which contains the parquet data and click on **Next**.
 
