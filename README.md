@@ -137,8 +137,8 @@ During this workshop, we will focus on Q417 of the New York City Taxi Records da
    select count(*) from reinv17_yellow;
    ```
 
-   7.1. Open the [AWS Management console for Amazon Athena](https://ap-southeast-2.console.aws.amazon.com/athena/home?force&region=ap-southeast-2). 
-   7.2. On the left pane for Database select "nycitytaxi-devday18" and copy paste the above SQL statement on the right
+   i. Open the [AWS Management console for Amazon Athena](https://ap-southeast-2.console.aws.amazon.com/athena/home?force&region=ap-southeast-2). 
+   x. On the left pane for Database select "nycitytaxi-devday18", copy paste the above SQL statement to the right New query space and "Run query"
    
 
 
