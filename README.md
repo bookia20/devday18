@@ -121,7 +121,7 @@ During this workshop, we will focus on the data from Q4 2017 of the New York Cit
 
 4. Click on **Tables**, under Data Catalog on the left column.
 
-5. If you look under **Tables**, you can see the three new tables that were created under the database nycitytaxi-devday18.
+5. If you look under **Tables**, you can see the two new tables that were created under the database nycitytaxi-devday18.
 
    ![glue4](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_4.PNG)
 
@@ -132,7 +132,7 @@ During this workshop, we will focus on the data from Q4 2017 of the New York Cit
 7. You can run queries against CSV format data however specially for aggregate type queries (e.g. show me average distance of all rides) since CSV is a row based format cost of running such queries is high and performance is not optimal. Try following query in Amazon Athena and notice the 'Data scanned:' after the query is finished.
 
    ```
-   select count(*) from q417_yellow;
+   select count(*) from csv_yellow;
    ```
 
    i. Open the [AWS Management console for Amazon Athena](https://ap-southeast-2.console.aws.amazon.com/athena/home?force&region=ap-southeast-2).
@@ -318,38 +318,26 @@ In regions where AWS Glue is supported, Athena uses the AWS Glue Data Catalog as
 
     ![glue19](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_comp_scanresult.PNG)
 
-    What we see is the Run time and Data scanned numbers for Amazon Athena to **query and scan the parquet data**.
+    What we see is the Run time and Data scanned numbers for Amazon Athena to **query and scan the parquet data**. You can see that a lot less data is scanned compare to when you ran the same query in CSV.
 
-18. Under Database, you should see the earlier made database **nycitytaxi-devday18** which was created in a previous section. Select this database and you should see under Tables **devday18_yellow**.
+18. Moment of truth: run following query to find out the answer to our question:
 
-19. In the query editor on the right, type
+  ```
+  SELECT type,
+         cast(avg(trip_distance) as decimal(10,2)) AS avgDist,
+         cast(avg(total_amount/trip_distance) as decimal(10,2)) AS avgCostPerMile,
+         cast(avg(tip_amount) as decimal(10,2)) AS avgTipAmount,
+         cast(max(tip_amount) as decimal(10,2)) AS maxTipAmount,
+         count(*) as rides
+  FROM parquet_combined
+  WHERE trip_distance > 0
+          AND total_amount > 0
+  GROUP BY  type
+  ```
 
-    ```
-    select count(*) from devday18_yellow;
-    ```
-
-    and take note the Run Time and Data scanned numbers here.
-
-    ![glue20](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_uncomp_scanresult.PNG)
-
-20. What we see is the Run time and Data scanned numbers for Amazon Athena to query and scan the uncompressed data from the previous section.
-
+Interestingly you see that on average yellow cab passengers pay more tip and somebody has paid $450 tip.
 
 > Note: Athena charges you by the amount of data scanned per query. You can save on costs and get better performance if you partition the data, compress data, or convert it to columnar formats such as Apache Parquet.
-
-## Deleting the Glue database, crawlers and ETL Jobs created for this Lab
-
-Now that you have successfully discovered and analyzed the dataset using Amazon Glue and Amazon Athena, you need to delete the resources created as part of this lab.
-
-1. Open the [AWS Management console for Amazon Glue](https://us-west-2.console.aws.amazon.com/glue/home?region=us-west-2#). Ensure you are in the Oregon region (as part of this lab).
-2. Click on **Databases** under Data Catalog column on the left.
-3. Check the box for the Database that were created as part of this lab. Click on **Action** and select **Delete Database**. And click on **Delete**. This will also delete the tables under this database.
-4. Click on **Crawlers** under Data Catalog column on the left.
-5. Check the box for the crawler that were created as part of this lab. Click on **Action** and select **Delete Crawler**. And click on **Delete**.
-6. Click on **Jobs** under ETL column on the left.
-7. Check the box for the jobs that were created as part of this lab. Click on **Action** and select **Delete**. And click on **Delete**.
-8. Open the [AWS Management console for Amazon S3](https://s3.console.aws.amazon.com/s3/home).
-9. Click on the S3 bucket that was created as part of this lab. You need to click on its corresponding **Bucket icon** to select the bucket instead of opening the bucket. Click on **Delete bucket** button on the top, to delete the S3 bucket. In the pop-up window, Type the name of the bucket (that was created as part of this lab), and click **Confirm**.
 
 ## Summary
 
@@ -358,6 +346,3 @@ In the lab, you went from data discovery to analyzing a canonical dataset, witho
 From there, you saw the datasets were in different formats, but represented the same thing: NY City Taxi rides. You then converted them into a canonical (or normalized) form that is easily queried through Athena and possible in QuickSight, in addition to a wide number of different tools not covered in this post.
 
 ---
-## License
-
-This library is licensed under the Apache 2.0 License.
