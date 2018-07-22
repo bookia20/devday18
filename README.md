@@ -1,6 +1,6 @@
 # DevDay Lab: Serverless ETL and Data Discovery using AWS Glue and Amazon Athena
 
-In this Lab we are trying to find out how much New Yorkers tip their taxi drivers using the [NYC taxi Data Set](http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml). The data set includes CSV files of the past 8 years and for three different cab types. For this lab we focus on Yellow and Green cabs data for the last quarter of 2017.
+In this Lab we are trying to find out on average how much New Yorkers tip their taxi drivers using the [NYC taxi Data Set](http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml). The data set includes CSV files of the past 8 years and for three different cab types. For this lab we focus on Yellow and Green cabs data for the last quarter of 2017.
 
 
 * [Create an IAM Role](#create-an-iam-role)
