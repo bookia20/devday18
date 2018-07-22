@@ -1,6 +1,6 @@
 # DevDay Lab: Serverless ETL and Data Discovery using AWS Glue and Amazon Athena
 
-In this Lab we are trying to find out how much New
+In this Lab we are trying to find out how much New Yorkers tip their taxi drivers using the [NYC taxi Data Set](http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml). The data set has CSV files for the past 8 years and for three different types. For this lab we focus on Yellow and Green cabs data for the last quarter of 2017.
 
 
 * [Create an IAM Role](#create-an-iam-role)
@@ -194,6 +194,8 @@ Create an ETL job to transform this data into a query-optimized form. You conver
 
 8. In this step we are going to add a new column indicating the type of Taxi so that we can combine Green and Yellow tables. Because AWS Glue uses Apache Spark behind the scenes, you can easily switch from an AWS Glue DynamicFrame to a Spark DataFrame in the code and do advanced operations within Apache Spark.  Just as easily, you can switch back and continue to use the transforms and tables from the catalog. Make the following custom modifications in PySpark.
 
+> Tip: copy the code in your editor of choice, make the changes and add it back into the console.
+
   i. Add the following header:
 
   ```
@@ -202,7 +204,6 @@ Create an ETL job to transform this data into a query-optimized form. You conver
   ```
 
   ii. Find the last call before the the line that starts with the datasink. This is the dynamic frame that is being used to write out the data. Let’s now convert that to a DataFrame. Add the following code before this line. Please replace the <DYNAMIC_FRAME_NAME> with the name generated in the script e.g. add the following code before this line.
-
 
   ```
   ##----------------------------------
