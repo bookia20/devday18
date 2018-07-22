@@ -1,5 +1,8 @@
 # DevDay Lab: Serverless ETL and Data Discovery using AWS Glue and Amazon Athena
 
+In this Lab we are trying to find out how much New
+
+
 * [Create an IAM Role](#create-an-iam-role)
 * [Create an Amazon S3 bucket](#create-an-amazon-s3-bucket)
 * [Discover the Data](#discover-the-data)
@@ -167,9 +170,7 @@ Create an ETL job to transform this data into a query-optimized form. You conver
 
 4. Click **Next**.
 
-5. Under Choose your data sources, select **devday18_yellow** table as the data source and click on **Next**.
-
-   > For this workshop, we are only working on the yellow dataset. Feel free to run through these steps to also convert the green and FHV dataset.
+5. Under Choose your data sources, select **csv_yellow** table as the data source and click on **Next**.
 
 6. Under Choose your data targets, select the radio button for **Create tables in your data target**.
 
@@ -177,7 +178,7 @@ Create an ETL job to transform this data into a query-optimized form. You conver
 
    ii. For Format, choose **Parquet**.
 
-   iii. For Target path, **click on the folder icon** and choose the target folder previously created. **This S3 Bucket/Folder will contain the transformed Parquet data**.
+   iii. For Target path, **click on the folder icon** and choose the bucket that created in step 1. **This S3 Bucket/Folder will contain the transformed Parquet data**.
 
 ![glue17](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_17.PNG)
 
@@ -191,7 +192,7 @@ Create an ETL job to transform this data into a query-optimized form. You conver
 
 ![glue9](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_9.PNG)
 
-8. In this step we are going to add a new column indicating the type of Taxi through the Glue code so that we can combine Green and Yellow data. Because AWS Glue uses Apache Spark behind the scenes, you can easily switch from an AWS Glue DynamicFrame to a Spark DataFrame in the code and do advanced operations within Apache Spark.  Just as easily, you can switch back and continue to use the transforms and tables from the catalog. Make the following custom modifications in PySpark.
+8. In this step we are going to add a new column indicating the type of Taxi so that we can combine Green and Yellow tables. Because AWS Glue uses Apache Spark behind the scenes, you can easily switch from an AWS Glue DynamicFrame to a Spark DataFrame in the code and do advanced operations within Apache Spark.  Just as easily, you can switch back and continue to use the transforms and tables from the catalog. Make the following custom modifications in PySpark.
 
   i. Add the following header:
 
@@ -200,7 +201,7 @@ Create an ETL job to transform this data into a query-optimized form. You conver
   from awsglue.dynamicframe import DynamicFrame
   ```
 
-  ii. Find the last call before the the line that start with the datasink. This is the dynamic frame that is being used to write out the data. Let’s now convert that to a DataFrame.  Please replace the <DYNAMIC_FRAME_NAME> with the name generated in the script.
+  ii. Find the last call before the the line that starts with the datasink. This is the dynamic frame that is being used to write out the data. Let’s now convert that to a DataFrame. Add the following code before this line. Please replace the <DYNAMIC_FRAME_NAME> with the name generated in the script e.g. add the following code before this line.
 
 
   ```
@@ -215,7 +216,7 @@ Create an ETL job to transform this data into a query-optimized form. You conver
   yellowDynamicFrame = DynamicFrame.fromDF(yellowDF, glueContext, "yellowDF_df")
   ##----------------------------------
   ```
-  iii. In the last datasink call, change the dynamic frame to point to the new custom dynamic frame created from the Spark DataFrame:
+  iii. In the last datasink line, change the dynamic frame to point to the new custom dynamic frame created from the Spark DataFrame i.e. yellowDynamicFrame:
 
   ```
   datasink4 = glueContext.write_dynamic_frame.from_options(frame = yellowDynamicFrame, connection_type = "s3", connection_options = {"path": "s3://<YOURBUCKET/ AND PREFIX/>"}, format = "parquet", transformation_ctx = "datasink4")
@@ -253,10 +254,6 @@ Create an ETL job to transform this data into a query-optimized form. You conver
   > Ensure that you replace the bucket name and path with the S3 path you created in step1
 
 9. The code should look like [Glue Job Code](https://github.com/safipour/devday18/blob/master/glue-etl.py) with S3 bucket replaced with that you created earlier in both datasink lines. Now click on **Save** and **Run Job**.
-
-![glue10](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_10.PNG)
-
-10. In the parameters pop-up, for Job bookmark, ensure its **Enable** and click on **Run Job**.
 
 11. This job will run for roughly around 2 minutes.
 
