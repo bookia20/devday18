@@ -29,7 +29,7 @@ Create an IAM role that has permission to your Amazon S3 sources, targets, tempo
 6. Enter Role name as
 
 ```
-nycitytaxi-meldevday
+nycitytaxi-devday18
 ```
 
 ​	and click Finish.
@@ -44,12 +44,12 @@ nycitytaxi-meldevday
 1. In the **Create Bucket** pop-up page, input a unique **Bucket name**. So it’s advised to choose a large bucket name, with many random characters and numbers (no spaces). It will be easier to name your bucket
 
    ```
-   aws-glue-scripts-<YOURAWSACCOUNTID>-us-west-2
+   devday18-<YOURNAME>-syd
    ```
 
    and it would be easier to choose/select this bucket for the remainder of this Lab3.
 
-   i.Select the region as **Oregon**.
+   i.Select the region as **Sydney**.
    ii. Click **Next** to navigate to next tab.
    iii. In the **Set properties** tab, leave all options as default.
    iv. In the **Set permissions** tag, leave all options as default.
@@ -85,12 +85,12 @@ During this workshop, we will focus on Q417 of the New York City Taxi Records da
 
    ii. Under Add information about your crawler, for Crawler name type **nycitytaxi-crawler-devday18**. You can skip the Description and Classifiers field and click on **Next**.
 
-   iii. Under Data Store, choose S3. And Ensure the radio button for **Crawl Data in Specified path** is checked.
+   iii. Under Data Store, choose S3.
 
    iv. For Include path, enter the following S3 path and click on **Next**.
 
    ```
-   s3://serverless-analytics/glue-blog/yellow
+   s3://devday18/nytaxi/yellow
    ```
 
    v. For Add Another data store, choose **Yes** and click on **Next**.
@@ -98,10 +98,10 @@ During this workshop, we will focus on Q417 of the New York City Taxi Records da
    vi. Enter path for the Green Taxi data:
 
    ```
-   s3://serverless-analytics/glue-blog/green
+   s3://devday18/nytaxi/green
    ```
 
-   vii. For Choose an IAM Role, select **Create an IAM role** and enter the role name as following and click on **Next**.
+   vii. Select No for another data store and Next, for Choose an IAM Role, select **Create an IAM role** and enter the role name as following and click on **Next**.
 
    ```
    nycitytaxi-devday18-crawler
@@ -113,7 +113,7 @@ During this workshop, we will focus on Q417 of the New York City Taxi Records da
 
    ​	a. For **Database**, select the database created earlier, **nycitytaxi-devday18**.
 
-   ​	b. For **Prefix added to tables (optional)**, type **devday18_** and click on **Next**.
+   ​	b. For **Prefix added to tables (optional)**, type **q417_** and click on **Next**.
 
    ​	c. Review configuration and click on **Finish** and on the next page, click on **Run it now** in the green box on the top.
 
@@ -131,10 +131,10 @@ During this workshop, we will focus on Q417 of the New York City Taxi Records da
 
    ![glue5](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_5.PNG)
 
-7. You can run queries against CSV format data however specially for aggregate type queries (e.g. show me average distance of all rides) since CSV is a row based format cost of running the such queries is high and performance is not optimal. Try following query in Amazon Athena and notice the 'Data scanned:' after the query is finished.
+7. You can run queries against CSV format data however specially for aggregate type queries (e.g. show me average distance of all rides) since CSV is a row based format cost of running such queries is high and performance is not optimal. Try following query in Amazon Athena and notice the 'Data scanned:' after the query is finished.
 
    ```
-   select count(*) from reinv17_yellow;
+   select count(*) from q417_yellow;
    ```
 
    i. Open the [AWS Management console for Amazon Athena](https://ap-southeast-2.console.aws.amazon.com/athena/home?force&region=ap-southeast-2).
@@ -145,7 +145,7 @@ During this workshop, we will focus on Q417 of the New York City Taxi Records da
 
 ## Transform CSV into Parquet, Combine the tables and Optimize the Queries
 
-Create an ETL job to transform this data into a query-optimized form. You convert the data into a column format, changing the storage type to Parquet, and writing the data to a bucket in your account. You are also combining the Green and Yellow data sets.
+Create an ETL job to transform this data into a query-optimized form. You convert the data into a columnar format, changing the storage type to Parquet, and writing the data to a bucket in your account. You are also combining the Green and Yellow data sets.
 
 1. Open the [AWS Management console for Amazon Glue](https://ap-southeast-2.console.aws.amazon.com/glue/home?region=ap-southeast-2).
 
@@ -189,7 +189,7 @@ Create an ETL job to transform this data into a query-optimized form. You conver
 
    ii. Under Target, change the Column name **tpep_dropoff_datetime** to **dropoff_date**. Click on its respective **data type** field string and change the Column type to **TIMESTAMP** and click on **Update**.
 
-   iii. Choose **Next**, verify the information and click **Finish**.
+   iii. Choose **Next**, verify the information and click **Save Job and edit script**.
 
 ![glue9](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_9.PNG)
 
@@ -208,7 +208,7 @@ Create an ETL job to transform this data into a query-optimized form. You conver
   ```
   ##----------------------------------
   #convert to a Spark DataFrame...
-  yellowDF = <DYNAMIC_FRAME_NAME>.toDF()
+  yellowDF = <DYNAMIC_FRAME_NAME e.g. dropnullfields3>.toDF()
 
   #add a new column for "type"
   yellowDF = yellowDF.withColumn("type", lit('yellow'))
@@ -247,16 +247,14 @@ Create an ETL job to transform this data into a query-optimized form. You conver
   greenDynamicFrame = DynamicFrame.fromDF(greenDF, glueContext, "greenDF_df")
   ##----------------------------------
 
-  datasink2 = glueContext.write_dynamic_frame.from_options(frame = greenDynamicFrame, connection_type = "s3", connection_options = {"path": "s3://<YOURBUCKET/ AND PREFIX/>"}, format = "parquet", transformation_ctx = "datasink2")
+  datasink22 = glueContext.write_dynamic_frame.from_options(frame = greenDynamicFrame, connection_type = "s3", connection_options = {"path": "s3://<YOURBUCKET/ AND PREFIX/>"}, format = "parquet", transformation_ctx = "datasink2")
 
   ####### End of Second DataSource
   ```
 
-  > Ensure that you replace the bucket name and path with the S3 path that you want to store the Parquet data
+  > Ensure that you replace the bucket name and path with the S3 path you created in step1
 
-  iv. Now click on **Save** and **Run Job**.
-
-9. The code should look like [Glue Job Code](https://github.com/safipour/devday18/blob/master/glue-etl.py) with S3 bucket that you created earlier as the target.
+9. The code should look like [Glue Job Code](https://github.com/safipour/devday18/blob/master/glue-etl.py) with S3 bucket replaced with that you created earlier in both datasink lines. Now click on **Save** and **Run Job**.
 
 ![glue10](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_10.PNG)
 
