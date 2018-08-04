@@ -1,6 +1,7 @@
-# DevDay Lab: Serverless ETL and Data Discovery using AWS Glue and Amazon Athena
+# AWS DevDay Lab: Serverless Data Discovery, ETL and Analytics using AWS Glue and Amazon Athena
 
 In this Lab we are trying to find out on average how much New Yorkers tip their taxi drivers using the [NYC taxi Data Set](http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml). The data set includes CSV files of the past 8 years and for three different cab types. For this lab we focus on Yellow and Green cabs data for the last quarter of 2017.
+This lab has been adapted from [AWS Samples Data Analytics Lab](https://github.com/aws-samples/serverless-data-analytics/blob/master/Lab3/README.md#create-an-amazon-s3-bucket)
 
 
 * [Create an IAM Role](#create-an-iam-role)
@@ -17,7 +18,7 @@ In this Lab we are trying to find out on average how much New Yorkers tip their 
 
 Create an IAM role that has permission to your Amazon S3 sources, targets, temporary directory, scripts, **AWSGlueServiceRole** and any libraries used by the job. You can click [here](https://console.aws.amazon.com/iam/home?region=us-west-2#/roles) to create a new role. For additional documentation to create a role [here](docs.aws.amazon.com/cli/latest/reference/iam/create-role.html).
 
-1. On the IAM Page, click on **Create Role**.
+1. On the IAM service Page, select Roles in the left pane and click on **Create Role**. 
 2. Choose the service as **Glue** and click on **Next: Permissions** on the bottom.
 3. On the Attach permissions policies, search policies for S3 and check the box for **AmazonS3FullAccess**.
 
@@ -40,16 +41,19 @@ Create an IAM role that has permission to your Amazon S3 sources, targets, tempo
    ```
    devday18-<YOURNAME>-syd
    ```
+   i. Select the region as **Sydney**.
 
-   i.Select the region as **Sydney**.
    ii. Click **Next** to navigate to next tab.
+
    iii. In the **Set properties** tab, leave all options as default.
+
    iv. In the **Set permissions** tab, leave all options as default.
+
    v. In the **Review** tab, click on **Create Bucket**
 
 ![bucket.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/bucket.png)
 
-2. Now, in this newly created bucket, create a folder and name it **combined**. We will use these bucket/folder to store parquet files result of ETL process.
+2. Now, in this newly created bucket, create a folder and name it **combined**. Leave the encryption as none (default).We will use these folder to store parquet files result of ETL process. 
 
 ## Discover the Data
 
@@ -113,7 +117,7 @@ As mentioned during this workshop, we will focus on the data from Q4 2017 of the
 
    ​	d. The crawler runs and indicates that it found two tables.
 
-4. Click on **Tables**, under Data Catalog on the left column.
+4. Click on **Tables**, under Data Catalog on the left column. Hit the circular refresh arrows on the top right side of the page to refresh the page.
 
 5. If you look under **Tables**, you can see the two new tables that were created under the database nycitytaxi-devday18.
 
@@ -128,8 +132,11 @@ As mentioned during this workshop, we will focus on the data from Q4 2017 of the
    ```
 
    i. Open the [AWS Management console for Amazon Athena](https://ap-southeast-2.console.aws.amazon.com/athena/home?force&region=ap-southeast-2).
+   
+   > Ensure you are in the **Asia Pacific (Sydney)** region.
 
-   x. On the left pane for Database select "nycitytaxi-devday18", copy paste the above SQL statement to the right New query space and "Run query".
+
+   ii. On the left pane for Database select "nycitytaxi-devday18", copy paste the above SQL statement to the right New query space and "Run query".
 
    ![csv-datascanned.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/csv-datascanned.png)
 
@@ -244,9 +251,9 @@ Create an ETL job to transform this data into a query-optimized form. You conver
 
 9. The code should look like [Glue Job Code](https://github.com/safipour/devday18/blob/master/glue-etl.py) with S3 bucket replaced with that you created earlier in both datasink lines. Now click on **Save** and **Run Job**.
 
-11. This job will run for roughly around 2 minutes.
+11. This job will run for roughly around 4 minutes. 
 
-   ![glue11](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/glue_11.PNG)
+   > While waiting you can inspect the code in the repository to see what steps it takes to transform from CSV to Parquet. Or if you are interested in knowing more about Parquet format you can have a quick read at [Apache Parquet](https://parquet.apache.org/documentation/latest/)
 
 12. You can view logs on the bottom page of the same page.
 
@@ -292,7 +299,7 @@ The Athena query engine uses the AWS Glue Data Catalog to fetch table metadata t
 
     > Ensure you are in the **Asian Pacific (Sydney)** region.
 
-16. Under Database, you should see the database **nycitytaxi-devday18** which was just created. Select this database and you should see under Tables **combined_parquet**.
+16. Under Database, you should see the database **nycitytaxi-devday18** which was just created. Select this database and you should see under Tables **parquet_combined**.
 
 17. In the query editor on the right, type
 
