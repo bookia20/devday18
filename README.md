@@ -272,7 +272,7 @@ The Athena query engine uses the AWS Glue Data Catalog to fetch table metadata t
 
 9. In Add another data store, choose **No** and click on **Next**.
 
-10. For Choose an IAM role, select Choose **Create an IAM role**, type **combined-crawler** as the name suffix and click on **Next**.
+10. For Choose an IAM role, select **Create an IAM role**, type **<YOURNAME>-combined-crawler** as the name suffix and click on **Next**.
 
 11. In Create a schedule for this crawler, pick frequency as **Run on demand** and click on **Next**.
 
