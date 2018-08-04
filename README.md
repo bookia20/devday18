@@ -4,7 +4,7 @@ In this Lab we are trying to find out on average how much New Yorkers tip their 
 This lab has been adapted from [AWS Samples Data Analytics Lab](https://github.com/aws-samples/serverless-data-analytics/blob/master/Lab3/README.md#create-an-amazon-s3-bucket)
 
 
-* [Create IAM Roles](#create-an-iam-role)
+* [IAM Roles](#create-an-iam-role)
 * [Create an Amazon S3 bucket](#create-an-amazon-s3-bucket)
 * [Discover the Data](#discover-the-data)
 * [Optimize the Queries and convert into Parquet](#optimize-the-queries-and-convert-into-parquet)
@@ -14,7 +14,7 @@ This lab has been adapted from [AWS Samples Data Analytics Lab](https://github.c
 ## Architectural Diagram
 ![architecture-overview-lab3.png](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/Screen+Shot+2017-11-17+at+1.11.32+AM.png)
 
-## Create IAM Roles for the Crawler and ETL jobs
+## IAM Roles for the Crawler and ETL jobs
 
 On the IAM service Page, select Roles in the left pane. There should already exist following two IAM roles:
 1- **nycitytaxi-devday18-etlrole**
