@@ -4,7 +4,7 @@ In this Lab we are trying to find out on average how much New Yorkers tip their 
 This lab has been adapted from [AWS Samples Data Analytics Lab](https://github.com/aws-samples/serverless-data-analytics/blob/master/Lab3/README.md#create-an-amazon-s3-bucket)
 
 
-* [Create an IAM Role](#create-an-iam-role)
+* [Create IAM Roles](#create-an-iam-role)
 * [Create an Amazon S3 bucket](#create-an-amazon-s3-bucket)
 * [Discover the Data](#discover-the-data)
 * [Optimize the Queries and convert into Parquet](#optimize-the-queries-and-convert-into-parquet)
@@ -14,24 +14,15 @@ This lab has been adapted from [AWS Samples Data Analytics Lab](https://github.c
 ## Architectural Diagram
 ![architecture-overview-lab3.png](https://s3-us-west-2.amazonaws.com/reinvent2017content-abd313/lab3/Screen+Shot+2017-11-17+at+1.11.32+AM.png)
 
-## Create an IAM Role for the ETL job
+## Create IAM Roles for the Crawler and ETL jobs
 
-Create an IAM role that has permission to your Amazon S3 sources, targets, temporary directory, scripts, **AWSGlueServiceRole** and any libraries used by the job. You can click [here](https://console.aws.amazon.com/iam/home?region=us-west-2#/roles) to create a new role. For additional documentation to create a role [here](docs.aws.amazon.com/cli/latest/reference/iam/create-role.html).
+On the IAM service Page, select Roles in the left pane. There should already exist following two IAM roles:
+1- **nycitytaxi-devday18-etlrole**
+2- **nycitytaxi-devday18-crawlerrole**
 
-1. On the IAM service Page, select Roles in the left pane and click on **Create Role**. 
-2. Choose the service as **Glue** and click on **Next: Permissions** on the bottom.
-3. On the Attach permissions policies, search policies for S3 and check the box for **AmazonS3FullAccess**.
-
-> Do not click on the policy, you just have to check the corresponding checkbox.
-
-4. On the same page, now search policies for Glue and check the box for **AWSGlueServiceRole** and **AWSGlueConsoleFullAccess**.
+If not, use the this [CloudFormation template](https://github.com/safipour/devday18/blob/master/cf-iam.json) to create the two roles.
 
 ![iamroleperm.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/iamroleperm.png)
-
-5. Click on **Next: Review**.
-6. Enter Role name as **nycitytaxi-devday18-etl**
-
-​	and click Create Role.
 
 ## Create an Amazon S3 bucket
 
@@ -53,7 +44,7 @@ Create an IAM role that has permission to your Amazon S3 sources, targets, tempo
 
 ![bucket.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/bucket.png)
 
-2. Now, in this newly created bucket, create a folder and name it **combined**. Leave the encryption as none (default).We will use these folder to store parquet files result of ETL process. 
+2. Now, in this newly created bucket, create a folder and name it **combined**. Leave the encryption as none (default).We will use these folder to store parquet files result of ETL process.
 
 ## Discover the Data
 
@@ -97,11 +88,7 @@ As mentioned during this workshop, we will focus on the data from Q4 2017 of the
    s3://devday18/nytaxi/green/
    ```
 
-   vii. Select No for another data store and Next, for Choose an IAM Role, select **Create an IAM role** and enter the role name as following and click on **Next**.
-
-   ```
-   nycitytaxi-devday18-crawler
-   ```
+   vii. Select No for another data store and Next, for Choose an IAM Role, select **Choose an existing IAM role** and select **nycitytaxi-devday18-crawlerrole** from the drop down. Click on **Next**.
 
    vii. For Create a schedule for this crawler, choose Frequency as **Run on Demand** and click on **Next**.
 
@@ -132,7 +119,7 @@ As mentioned during this workshop, we will focus on the data from Q4 2017 of the
    ```
 
    i. Open the [AWS Management console for Amazon Athena](https://ap-southeast-2.console.aws.amazon.com/athena/home?force&region=ap-southeast-2).
-   
+
    > Ensure you are in the **Asia Pacific (Sydney)** region.
 
 
@@ -251,7 +238,7 @@ Create an ETL job to transform this data into a query-optimized form. You conver
 
 9. The code should look like [Glue Job Code](https://github.com/safipour/devday18/blob/master/glue-etl.py) with S3 bucket replaced with that you created earlier in both datasink lines. Now click on **Save** and **Run Job**.
 
-11. This job will run for roughly around 4 minutes. 
+11. This job will run for roughly around 4 minutes.
 
    > While waiting you can inspect the code in the repository to see what steps it takes to transform from CSV to Parquet. Or if you are interested in knowing more about Parquet format you can have a quick read at [Apache Parquet](https://parquet.apache.org/documentation/latest/)
 

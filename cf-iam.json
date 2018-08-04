@@ -16,8 +16,46 @@
             },
             "ManagedPolicyArns": ["arn:aws:iam::aws:policy/AmazonS3FullAccess", "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole", "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess"],
             "Path": "/",
-            "RoleName": "nycitytaxi-devday18-etl"
+            "RoleName": "nycitytaxi-devday18-etlrole"
          }
       },
+      "crwalRole":{
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+           "AssumeRolePolicyDocument": {
+              "Version" : "2012-10-17",
+              "Statement": [ {
+                 "Effect": "Allow",
+                 "Principal": {
+                    "Service": [ "glue.amazonaws.com" ]
+                 },
+                 "Action": [ "sts:AssumeRole" ]
+              } ]
+           },
+           "ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"],
+           "Path": "/",
+           "Policies": [ {
+                          "PolicyName": "nytaxi-yellow-green",
+                          "PolicyDocument": {
+                             "Version" : "2012-10-17",
+                             "Statement": [
+                                 {
+                                     "Effect": "Allow",
+                                     "Action": [
+                                         "s3:GetObject",
+                                         "s3:PutObject"
+                                     ],
+                                     "Resource": [
+                                         "arn:aws:s3:::devday18/nytaxi/green/*",
+                                         "arn:aws:s3:::devday18/nytaxi/yellow/*"
+                                     ]
+                                 }
+                             ]
+                          }
+           } ],
+           "RoleName": "nycitytaxi-devday18-crawlerrole"
+        }
+
+      }
    }
 }
