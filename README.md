@@ -1,7 +1,7 @@
 # AWS DevDay Lab: Serverless Data Discovery, ETL and Analytics using AWS Glue and Amazon Athena
 
 In this Lab we are trying to find out on average how much New Yorkers tip their taxi drivers using the [NYC taxi Data Set](http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml). The data set includes CSV files of the past 8 years and for three different cab types. For this lab we focus on Yellow and Green cabs data for the last quarter of 2017.
-This lab has been adapted from [AWS Samples Data Analytics Lab](https://github.com/aws-samples/serverless-data-analytics/blob/master/Lab3/README.md#create-an-amazon-s3-bucket)
+This lab has been adapted from [AWS Samples Data Analytics](https://github.com/aws-samples/serverless-data-analytics/blob/master/Lab3/README.md#create-an-amazon-s3-bucket).
 
 
 * [IAM Roles](#create-an-iam-role)
@@ -31,7 +31,7 @@ Policies associated with the ETL Role:
 ## Create an Amazon S3 bucket
 
 1. Open the [AWS Management console for Amazon S3](https://s3.console.aws.amazon.com/s3/home?region=us-west-2)
-2. On the S3 Dashboard, Click on **Create Bucket**. In the **Create Bucket** pop-up page, input a unique **Bucket name**. So it’s advised to choose a large bucket name, with many random characters and numbers (no spaces) to avoid name conflicts. As an example:
+2. On the S3 Dashboard, Click on **Create Bucket**. In the **Create Bucket** pop-up page, input a unique **Bucket Name**. So it’s advised to choose a large bucket name, with many random characters and numbers (no spaces) to avoid name conflicts. As an example:
 
    ```
    devday18-<YOURNAME>-syd
@@ -56,6 +56,12 @@ As mentioned during this workshop, we will focus on the data from Q4 2017 of the
 
 > For this lab, you choose the **Asia Pacific (Sydney)** region.
 
+0. CLEANUP: make sure that you delete the Glue Catalog from previous runs of the lab. Go to Athena service page and in a new tab paste:
+
+> DROP DATABASE IF EXISTS devday18nytaxi;
+
+Click 'Run Query'. You should see a success message.
+
 1. Open the [AWS Management console for Amazon Glue](https://ap-southeast-2.console.aws.amazon.com/glue/home?region=ap-southeast-2#).
 
 2. To analyze all the taxi rides for Q4 2017, you start with a set of data in that is already uploaded to S3. First, create a database for this workshop within AWS Glue. A database is a set of associated table definitions, organized into a logical group. In Glue Catalog, database names are all lowercase, no matter what you type.
@@ -66,7 +72,7 @@ As mentioned during this workshop, we will focus on the data from Q4 2017 of the
 
    ii. Click on the **Add Database** button.
 
-   iii. Enter the Database name as **nycitytaxi-devday18**. You can skip the description and location fields and click on **Create**.
+   iii. Enter the Database name as **devday18nytaxi**. You can skip the description and location fields and click on **Create**.
 
 3. Click on **Crawlers** under Data Catalog column on the left.
 
@@ -98,7 +104,7 @@ As mentioned during this workshop, we will focus on the data from Q4 2017 of the
 
    viii. Configure the crawler output database and prefix:
 
-   ​	a. For **Database**, select the database created earlier, **nycitytaxi-devday18**.
+   ​	a. For **Database**, select the database created earlier, **devday18nytaxi**.
 
    ​	b. For **Prefix added to tables (optional)**, type **csv_** and click on **Next**.
 
@@ -110,7 +116,7 @@ As mentioned during this workshop, we will focus on the data from Q4 2017 of the
 
 4. Click on **Tables**, under Data Catalog on the left column. Hit the circular refresh arrows on the top right side of the page to refresh the page.
 
-5. If you look under **Tables**, you can see the two new tables that were created under the database nycitytaxi-devday18.
+5. If you look under **Tables**, you can see the two new tables that were created under the database devday18nytaxi.
 
    ![glue-csv-tables.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/glue-csv-tables.png)
 
@@ -127,7 +133,7 @@ As mentioned during this workshop, we will focus on the data from Q4 2017 of the
    > Ensure you are in the **Asia Pacific (Sydney)** region.
 
 
-   ii. On the left pane for Database select "nycitytaxi-devday18", copy paste the above SQL statement to the right New query space and "Run query".
+   ii. On the left pane for Database select **devday18nytaxi**, copy paste the above SQL statement to the right New query space and "Run query".
 
    ![csv-datascanned.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/csv-datascanned.png)
 
@@ -214,7 +220,7 @@ Create an ETL job to transform this data into a query-optimized form. You conver
   ```
   ####### Second DataSource
 
-  datasource22 = glueContext.create_dynamic_frame.from_catalog(database = "nycitytaxi-devday18", table_name = "csv_green", transformation_ctx = "datasource22")
+  datasource22 = glueContext.create_dynamic_frame.from_catalog(database = "devday18nytaxi", table_name = "csv_green", transformation_ctx = "datasource22")
 
   applymapping22 = ApplyMapping.apply(frame = datasource22, mappings = [("vendorid", "long", "vendorid", "long"), ("lpep_pickup_datetime", "string", "pickup_date", "timestamp"), ("lpep_dropoff_datetime", "string", "dropoff_date", "timestamp"), ("store_and_fwd_flag", "string", "store_and_fwd_flag", "string"), ("ratecodeid", "long", "ratecodeid", "long"), ("pulocationid", "long", "pulocationid", "long"), ("dolocationid", "long", "dolocationid", "long"), ("passenger_count", "long", "passenger_count", "long"), ("trip_distance", "double", "trip_distance", "double"), ("fare_amount", "double", "fare_amount", "double"), ("extra", "double", "extra", "double"), ("mta_tax", "double", "mta_tax", "double"), ("tip_amount", "double", "tip_amount", "double"), ("tolls_amount", "double", "tolls_amount", "double"), ("improvement_surcharge", "double", "improvement_surcharge", "double"), ("total_amount", "double", "total_amount", "double"), ("payment_type", "long", "payment_type", "long")], transformation_ctx = "applymapping2")
 
@@ -258,7 +264,7 @@ The Athena query engine uses the AWS Glue Data Catalog to fetch table metadata t
 
    > Ensure you are in the **Asia Pacific (Sydney)** region.
 
-2. Under Database, you should see the database **nycitytaxi-devday18** which was created during the previous section.
+2. Under Database, you should see the database **devday18nytaxi** which was created during the previous section.
 
 3. Click on **Create Table** right below the drop-down for Database and click on **Automatically (AWS Glue Crawler)**.
 
@@ -280,17 +286,17 @@ The Athena query engine uses the AWS Glue Data Catalog to fetch table metadata t
 
 11. In Create a schedule for this crawler, pick frequency as **Run on demand** and click on **Next**.
 
-12. For Configure the crawler's output, Select **nycitytaxi-devday18** as the database from the drop down. For Prefix added to tables, you can enter a prefix **parquet_** and click **Next**.
+12. For Configure the crawler's output, Select **devday18nytaxi** as the database from the drop down. For Prefix added to tables, you can enter a prefix **parquet_** and click **Next**.
 
 13. Review the Crawler Info and click **Finish**. Click on **Run it Now?**.
 
-14. Click on **Tables** on the left, and for database **nycitytaxi-devday18** you should see the table **parquet_combined**. Click on the table name and you will see the MetaData for this converted table.
+14. Click on **Tables** on the left, and for database **devday18nytaxi** you should see the table **parquet_combined**. Click on the table name and you will see the MetaData for this converted table.
 
 15. Open the [AWS Management console for Amazon Athena](https://ap-southeast-2.console.aws.amazon.com/athena/home?region=ap-southeast-2#query).
 
     > Ensure you are in the **Asian Pacific (Sydney)** region.
 
-16. Under Database, you should see the database **nycitytaxi-devday18** which was just created. Select this database and you should see under Tables **parquet_combined**.
+16. Under Database, you should see the database **devday18nytaxi** which was just created. Select this database and you should see under Tables **parquet_combined**.
 
 17. In the query editor on the right, type
 
