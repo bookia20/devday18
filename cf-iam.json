@@ -1,0 +1,23 @@
+{
+   "AWSTemplateFormatVersion": "2010-09-09",
+   "Resources": {
+      "nycitytaxi-devday18-etl": {
+         "Type": "AWS::IAM::Role",
+         "Properties": {
+            "AssumeRolePolicyDocument": {
+               "Version" : "2012-10-17",
+               "Statement": [ {
+                  "Effect": "Allow",
+                  "Principal": {
+                     "Service": [ "glue.amazonaws.com" ]
+                  },
+                  "Action": [ "sts:AssumeRole" ]
+               } ]
+            },
+            "Path": "/"
+         }
+      },
+      "ManagedPolicyArns": ["arn:aws:iam::aws:policy/AmazonS3FullAccess", "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole", "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess"],
+      "RoleName": "nycitytaxi-devday18-etl"
+   }
+}  
