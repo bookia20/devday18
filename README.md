@@ -17,10 +17,14 @@ This lab has been adapted from [AWS Samples Data Analytics Lab](https://github.c
 ## IAM Roles for the Crawler and ETL jobs
 
 On the IAM service Page, select Roles in the left pane. There should already exist following two IAM roles:
+
 1- **nycitytaxi-devday18-etlrole**
+
 2- **nycitytaxi-devday18-crawlerrole**
 
 If not, use the this [CloudFormation template](https://github.com/safipour/devday18/blob/master/cf-iam.json) to create the two roles.
+
+Policies associated with the ETL Role:
 
 ![iamroleperm.png](https://s3-ap-southeast-2.amazonaws.com/devday18/nytaxi/images/iamroleperm.png)
 
