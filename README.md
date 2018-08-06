@@ -52,7 +52,9 @@ As mentioned, in this lab we will focus on the data from Q4 2017 of the New York
 
 CLEAN UP: make sure that you delete database in the Glue Catalog from previous runs of the lab. Go to Athena service page and in a new tab paste:
 
-> DROP DATABASE IF EXISTS devday18nytaxi;
+```
+DROP DATABASE IF EXISTS devday18nytaxi CASCADE;
+```
 
 Click 'Run Query'. You should see a success message.
 
