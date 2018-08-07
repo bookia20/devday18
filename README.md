@@ -76,7 +76,7 @@ Click 'Run Query'. You should see a success message.
 
    i. Click on **Add Crawler** button.
 
-   ii. Under Add information about your crawler, for Crawler name type **YOURNAME-nytaxi-csv-crawler**. You can skip the Description and Classifiers field and click on **Next**.
+   ii. Under Add information about your crawler, for Crawler name type **<YOURNAME>-nytaxi-csv-crawler**. You can skip the Description and Classifiers field and click on **Next**.
 
    iii. Under Data Store, choose S3.
 
