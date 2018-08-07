@@ -76,7 +76,7 @@ Click 'Run Query'. You should see a success message.
 
    i. Click on **Add Crawler** button.
 
-   ii. Under Add information about your crawler, for Crawler name type **nytaxi-<YOURNAME>-csv-crawler**. You can skip the Description and Classifiers field and click on **Next**.
+   ii. Under Add information about your crawler, for Crawler name type **nytaxi-YOURNAME-csv-crawler**. You can skip the Description and Classifiers field and click on **Next**.
 
    iii. Under Data Store, choose S3.
 
@@ -266,7 +266,7 @@ The Athena query engine uses the AWS Glue Data Catalog to fetch table metadata t
 
 4. You will now be re-directed to the AWS Glue console to set up a crawler. The crawler connects to your data store and automatically determines its structure to create the metadata for your table. Click on **Continue**.
 
-5. Enter Crawler name as **nytaxi-<YOURNAME>-parquet-crawler** and Click **Next**.
+5. Enter Crawler name as **nytaxi-YOURNAME-parquet-crawler** and Click **Next**.
 
 6. Select Data store as **S3**.
 
