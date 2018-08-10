@@ -83,7 +83,7 @@ Click 'Run Query'. You should see a success message.
    iv. For Include path, enter the following S3 path and click on **Next**.
 
    ```
-   s3://devday18/nytaxi/yellow/
+   s3://devday18-<YOURNAME>-syd/nytaxi/yellow/
    ```
 
    v. For Add Another data store, choose **Yes** and click on **Next**.
@@ -91,7 +91,7 @@ Click 'Run Query'. You should see a success message.
    vi. Enter path for the Green Taxi data:
 
    ```
-   s3://devday18/nytaxi/green/
+   s3://devday18-<YOURNAME>-syd/nytaxi/green/
    ```
 
    vii. Select No for another data store and Next.
